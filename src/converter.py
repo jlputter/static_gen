@@ -88,10 +88,12 @@ def extract_markdown_links(text):
 
 def text_to_textnodes(text):
     initial_node = TextNode(text=text, text_type=text_type_text)
-    split_by_bold = split_nodes_delimiter([initial_node], "**", text_type_bold)
-    split_by_italic = split_nodes_delimiter(split_by_bold, "*", text_type_italic)
-    split_by_code = split_nodes_delimiter(split_by_italic, "`", text_type_code)
-    split_by_image = split_nodes_image(split_by_code)
+    split_by_image = split_nodes_image([initial_node])
     split_by_links = split_nodes_link(split_by_image)
+    split_by_bold = split_nodes_delimiter(split_by_links, "**", text_type_bold)
+    split_by_italic = split_nodes_delimiter(split_by_bold, "*", text_type_italic)
+    split_by_italic_again = split_nodes_delimiter(split_by_italic, "_", text_type_italic)
+    split_by_code = split_nodes_delimiter(split_by_italic_again, "`", text_type_code)
+    
 
-    return split_by_links
+    return split_by_code

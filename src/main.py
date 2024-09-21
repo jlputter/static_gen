@@ -1,34 +1,23 @@
-from textnode import TextNode
-from htmlnode import *
-from converter import *
-from markdown_blocks import *
+import os
+import shutil
+
+from copystatic import copy_files_recursive
+from generate_page import generate_pages_recursive
+
+
+dir_path_static = "./static"
+dir_path_public = "./public"
+
 
 def main():
-    test_string = """
-# This is a heading
+    print("Deleting public directory...")
+    if os.path.exists(dir_path_public):
+        shutil.rmtree(dir_path_public)
 
-This is a paragraph of text. It has some **bold** and *italic* words inside of it.
+    print("Copying static files to public directory...")
+    copy_files_recursive(dir_path_static, dir_path_public)
 
-* This is the first list item in a list block
-* This is a list item
-* This is another list item
-"""
-    # text_node = TextNode("fart box in a *juice*  *box*", "text", "www.getlaid.com")
-    # text_node2 = TextNode("*juice*  *box*", "text", "www.getlaid.com")
-
-    # text_extract_image = TextNode("this is fake text before the two instances ![blim](blaaaaam) skibidi skibidi ![blimo](blaaaaamo) this is some text afterwards <3", "text")
-    # print(split_nodes_image([text_extract_image]) )
-
-    # text_extract_link = TextNode("this is fake text before the two instances [blim](blaaaaam) skibidi skibidi ![blimo](blaaaaamo) this is some text afterwards <3", "text")
-    # print(split_nodes_link([text_extract_link]))
-
-
-    # tester =  "This is **text** with an *italic* word and a `code block` and an ![obi wan image](https://i.imgur.com/fJRm4Vk.jpeg) and a [link](https://boot.dev)"
-
-    # print(text_to_textnodes(tester))
-          
-    print(markdown_to_blocks(test_string))
-
+    generate_pages_recursive("content/", "template.html", "public/")
 
 
 main()
